@@ -37,7 +37,7 @@ function App() {
       return
     }
     QrScanner.scanImage(file, { returnDetailedScanResult: true })
-      .then(result => console.log(result.data))
+      .then(result => setResult(result.data))
       .catch(e => console.log(e))
   }
 
@@ -69,6 +69,8 @@ function App() {
       <input type="text" onChange={e => setInputValue(e.target.value)}></input>
       <input type="button" onClick={download} value="Download" />
       <input type="file" onChange={e => readCode(e)}></input>
+
+      <p>Result is {result}</p>
     </div>
   )
 }
