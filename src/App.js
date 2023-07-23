@@ -1,9 +1,11 @@
 import "./App.css"
 import { useState } from "react"
 import QRCode from "react-qr-code"
+import QrScanner from "qr-scanner"
 
 function App() {
   const [inputValue, setInputValue] = useState("")
+  const [result, setResult] = useState("")
 
   // eslint-disable-next-line no-unused-vars
   const download = () => {
@@ -25,6 +27,18 @@ function App() {
       downloadLink.click()
     }
     img.src = `data:image/svg+xml;base64,${btoa(svgData)}`
+  }
+
+  // Read qr code
+  const readCode = e => {
+    // eslint-disable-next-line no-undef
+    const file = e.target.files[0]
+    if (!file) {
+      return
+    }
+    QrScanner.scanImage(file, { returnDetailedScanResult: true })
+      .then(result => console.log(result.data))
+      .catch(e => console.log(e))
   }
 
   return (
@@ -54,6 +68,7 @@ function App() {
 
       <input type="text" onChange={e => setInputValue(e.target.value)}></input>
       <input type="button" onClick={download} value="Download" />
+      <input type="file" onChange={e => readCode(e)}></input>
     </div>
   )
 }
